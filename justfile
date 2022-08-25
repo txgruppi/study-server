@@ -1,5 +1,5 @@
 build: generate
-  go build -ldflags "-s -w" -v -o dist/tasks-server main.go
+  CGO_ENABLED=0 go build -ldflags "-s -w" -v -o dist/tasks-server main.go
   cp -r ./docs/ ./dist/
 
 generate:
