@@ -1,0 +1,137 @@
+# To view this file go to https://editor.swagger.io/ and paste this file's contents
+openapi: 3.0.2
+info:
+    title: Tasks Server
+    version: 1.0.0
+paths:
+    /tasks:
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Task'
+                    description: List of tasks
+                '500':
+                    description: Internal Server Error
+            summary: Get a list of tasks
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TaskCreateRequestData'
+                required: true
+            responses:
+                '201':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+                    description: Task created
+                '400':
+                    description: Invalid request data
+                '500':
+                    description: Internal server error
+            summary: Create a new task
+    '/tasks/{taskID}':
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+                    description: Requested task
+                '404':
+                    description: Task not found
+                '500':
+                    description: Internal server error
+            summary: Get a single task
+        delete:
+            responses:
+                '410':
+                    description: Task deleted
+                '500':
+                    description: Internal server error
+            summary: Delete a task
+        patch:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+                    description: Task updated
+                '400':
+                    description: Request data is not valid
+                '404':
+                    description: Task not found
+                '500':
+                    description: Internal server error
+            summary: Update a task
+        parameters:
+            -
+                name: taskID
+                schema:
+                    type: string
+                in: path
+                required: true
+components:
+    schemas:
+        Task:
+            title: Root Type for Task
+            description: ''
+            required:
+                - id
+                - start
+                - title
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                start:
+                    format: date-time
+                    type: string
+                end:
+                    format: date-time
+                    type: string
+            example:
+                id: abcdef
+                title: Sample task
+                start: '2022-08-25T13:05:00-03:00'
+                end: '2022-08-25T13:05:01-03:00'
+        TaskCreateRequestData:
+            title: Root Type for TaskCreateRequestData
+            description: ''
+            required:
+                - start
+                - title
+            type: object
+            properties:
+                title:
+                    type: string
+                start:
+                    format: date-time
+                    type: string
+            example:
+                title: Sample task
+                start: '2022-08-25T13:05:00-03:00'
+        TaskPathRequestData:
+            title: Root Type for TaskPathRequestData
+            description: ''
+            required:
+                - end
+            type: object
+            properties:
+                end:
+                    format: date-time
+                    type: string
+            example:
+                end: '2022-08-25T13:05:01-03:00'
+
