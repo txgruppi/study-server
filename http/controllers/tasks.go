@@ -45,7 +45,7 @@ func (t *Tasks) Create(c echo.Context) error {
 	if err := t.Store.Insert(taskID, &doc); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, doc)
+	return c.JSON(http.StatusCreated, doc)
 }
 
 func (t *Tasks) List(c echo.Context) error {
