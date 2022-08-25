@@ -113,5 +113,5 @@ func (t *Tasks) DeleteByID(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.NoContent(http.StatusGone)
+	return c.NoContent(http.StatusOK)
 }

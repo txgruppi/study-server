@@ -53,12 +53,18 @@ paths:
             summary: Get a single task
         delete:
             responses:
-                '410':
+                '200':
                     description: Task deleted
                 '500':
                     description: Internal server error
             summary: Delete a task
         patch:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TaskPathRequestData'
+                required: true
             responses:
                 '200':
                     content:
