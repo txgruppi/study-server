@@ -20,10 +20,10 @@ func Wire() (*cli.App, error) {
 	if err != nil {
 		return nil, err
 	}
-	echo, err := http.Wire(store)
+	runner, err := http.Wire(store)
 	if err != nil {
 		return nil, err
 	}
-	app := cli2.Wire(echo)
+	app := cli2.Wire(runner)
 	return app, nil
 }

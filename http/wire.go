@@ -1,8 +1,11 @@
 package http
 
 import (
+	"fmt"
+	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -73,14 +76,27 @@ func (t *Validator) Validate(i interface{}) error {
 	return nil
 }
 
-func Wire(store *badgerhold.Store) (*echo.Echo, error) {
+type Runner func(port int, min, max time.Duration) error
+
+func Wire(store *badgerhold.Store) (Runner, error) {
 	e := echo.New()
 	e.Validator = &Validator{validate: validator.New()}
 
 	tasks := controllers.Tasks{Store: store}
 	posts := controllers.Posts{Store: store}
 
+	var delayMin, delayMax time.Duration
+
 	e.Pre(middleware.RemoveTrailingSlash())
+
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			delay := time.Duration(rand.Int63n(int64(delayMax-delayMin)+1)) + delayMin
+			c.Response().Header().Set("X-Delay", delay.String())
+			time.Sleep(delay)
+			return next(c)
+		}
+	})
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -97,5 +113,9 @@ func Wire(store *badgerhold.Store) (*echo.Echo, error) {
 	e.GET("/posts/:postID", posts.GetByID)
 	e.DELETE("/posts/:postID", posts.DeleteByID)
 
-	return e, nil
+	return func(port int, min, max time.Duration) error {
+		delayMin = min
+		delayMax = max
+		return e.Start(fmt.Sprintf(":%d", port))
+	}, nil
 }
