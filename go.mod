@@ -9,7 +9,9 @@ require (
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.8.0
 	github.com/matoous/go-nanoid/v2 v2.0.0
+	github.com/samber/lo v1.27.1
 	github.com/timshannon/badgerhold v1.0.0
+	github.com/txgruppi/parseargs-go v0.0.0-20170124215356-4cb98496e521
 	github.com/urfave/cli/v2 v2.11.2
 )
 
@@ -47,6 +49,7 @@ require (
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	go.opencensus.io v0.22.5 // indirect
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
 	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect

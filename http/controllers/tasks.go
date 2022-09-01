@@ -26,6 +26,9 @@ type Tasks struct {
 }
 
 func (t *Tasks) Create(c echo.Context) error {
+	t.mtx.Lock()
+	defer t.mtx.Unlock()
+
 	var reqData TaskCreateRequestData
 	if err := c.Bind(&reqData); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -49,6 +52,9 @@ func (t *Tasks) Create(c echo.Context) error {
 }
 
 func (t *Tasks) List(c echo.Context) error {
+	t.mtx.Lock()
+	defer t.mtx.Unlock()
+
 	var tasks []models.Task
 	if err := t.Store.Find(&tasks, nil); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -60,6 +66,9 @@ func (t *Tasks) List(c echo.Context) error {
 }
 
 func (t *Tasks) Patch(c echo.Context) error {
+	t.mtx.Lock()
+	defer t.mtx.Unlock()
+
 	var reqData TaskPatchRequestData
 	if err := c.Bind(&reqData); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -95,6 +104,9 @@ func (t *Tasks) Patch(c echo.Context) error {
 }
 
 func (t *Tasks) GetByID(c echo.Context) error {
+	t.mtx.Lock()
+	defer t.mtx.Unlock()
+
 	taskID := c.Param("taskID")
 	var doc *models.Task
 	err := t.Store.Get(taskID, &doc)
@@ -108,6 +120,9 @@ func (t *Tasks) GetByID(c echo.Context) error {
 }
 
 func (t *Tasks) DeleteByID(c echo.Context) error {
+	t.mtx.Lock()
+	defer t.mtx.Unlock()
+
 	taskID := c.Param("taskID")
 	err := t.Store.Delete(taskID, &models.Task{})
 	if err != nil {
