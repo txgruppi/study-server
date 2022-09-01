@@ -5,9 +5,9 @@ package app
 
 import (
 	"github.com/google/wire"
-	"github.com/txgruppi/tasks-server/cli"
-	"github.com/txgruppi/tasks-server/database"
-	"github.com/txgruppi/tasks-server/http"
+	"github.com/txgruppi/study-server/cli"
+	"github.com/txgruppi/study-server/database"
+	"github.com/txgruppi/study-server/http"
 	ucli "github.com/urfave/cli/v2"
 )
 

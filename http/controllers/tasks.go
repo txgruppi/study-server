@@ -7,8 +7,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/timshannon/badgerhold"
-	"github.com/txgruppi/tasks-server/models"
-	"github.com/txgruppi/tasks-server/utils"
+	"github.com/txgruppi/study-server/models"
+	"github.com/txgruppi/study-server/utils"
 )
 
 type TaskCreateRequestData struct {

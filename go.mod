@@ -1,4 +1,4 @@
-module github.com/txgruppi/tasks-server
+module github.com/txgruppi/study-server
 
 go 1.18
 

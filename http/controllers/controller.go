@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/txgruppi/tasks-server/utils"
+	"github.com/txgruppi/study-server/utils"
 )
 
 type Controller struct {

@@ -7,9 +7,9 @@
 package app
 
 import (
-	cli2 "github.com/txgruppi/tasks-server/cli"
-	"github.com/txgruppi/tasks-server/database"
-	"github.com/txgruppi/tasks-server/http"
+	cli2 "github.com/txgruppi/study-server/cli"
+	"github.com/txgruppi/study-server/database"
+	"github.com/txgruppi/study-server/http"
 	"github.com/urfave/cli/v2"
 )
 

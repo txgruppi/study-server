@@ -1,5 +1,5 @@
 build: generate
-  CGO_ENABLED=0 go build -ldflags "-s -w" -v -o dist/tasks-server main.go
+  CGO_ENABLED=0 go build -ldflags "-s -w" -v -o dist/study-server main.go
   cp -r ./docs/ ./dist/
 
 generate:
@@ -10,7 +10,7 @@ dev:
 
 package: clean build
   mkdir -p release/
-  cd dist && zip -r ../release/tasks-server.zip *
+  cd dist && zip -r ../release/study-server.zip *
 
 clean:
   rm -rf dist/

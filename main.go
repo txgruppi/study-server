@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/txgruppi/tasks-server/app"
+	"github.com/txgruppi/study-server/app"
 )
 
 func run() error {
