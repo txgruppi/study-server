@@ -1,7 +1,7 @@
 # To view this file go to https://editor.swagger.io/ and paste this file's contents
 openapi: 3.0.2
 info:
-    title: Tasks Server
+    title: Study Server
     version: 1.0.0
 servers:
     -
@@ -129,9 +129,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/Post'
+                                $ref: '#/components/schemas/PostListResponseData'
                     description: List of posts
                 '400':
                     description: Some of the request data is invalid.
@@ -366,3 +364,29 @@ components:
                         created_at: '2022-09-01T16:42:53.980595762-03:00'
                         updated_at: '2022-09-01T16:42:53.980595762-03:00'
                         version: 1
+        PostListResponseData:
+            title: Root Type for PostListResponseData
+            description: ''
+            required:
+                - total
+                - posts
+            type: object
+            properties:
+                total:
+                    format: int32
+                    type: integer
+                posts:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Post'
+            example:
+                total: 1
+                posts:
+                    -
+                        id: g9u0SozHVe
+                        title: Post 669ca3a91f38a24278c9030d68097f7f
+                        text: Test text a8fa5d0c9d843793e338f862d01862cc
+                        created_at: '2022-09-06T23:01:43.555926805-03:00'
+                        updated_at: '2022-09-06T23:01:43.555926805-03:00'
+                        version: 1
+
