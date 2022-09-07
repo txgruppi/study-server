@@ -28,6 +28,11 @@ type PostPatchRequestData struct {
 	Text  *string `json:"text"`
 }
 
+type PostListResponseData struct {
+	Total int         `json:"total"`
+	Posts []*dto.Post `json:"posts"`
+}
+
 type Posts struct {
 	Controller
 	Store *badgerhold.Store
@@ -117,24 +122,37 @@ func (t *Posts) List(c echo.Context) error {
 			}
 		}
 	}
-	if params.Skip != nil {
-		query = query.Skip(*params.Skip)
-	}
-	if params.Limit != nil {
-		query = query.Limit(*params.Limit)
-	}
 
-	var docs []*models.Post
-	if err := t.Store.Find(&docs, query); err != nil {
+	var all []*models.Post
+	if err := t.Store.Find(&all, query); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	res := make([]dto.Post, len(docs))
-	for i, doc := range docs {
-		res[i] = *dto.NewPostFromModel(doc)
+	start := 0
+	end := len(all)
+
+	if params.Skip != nil {
+		start = *params.Skip
+	}
+	if params.Limit != nil {
+		end = start + *params.Limit
+	}
+	if end > len(all) {
+		end = len(all)
+	}
+	if start > end {
+		start = end
 	}
 
-	return c.JSON(http.StatusOK, res)
+	docs := make([]*dto.Post, 0, end-start)
+	for i := start; i < end; i++ {
+		docs = append(docs, dto.NewPostFromModel(all[i]))
+	}
+
+	return c.JSON(http.StatusOK, PostListResponseData{
+		Total: len(all),
+		Posts: docs,
+	})
 }
 
 func (t *Posts) Patch(c echo.Context) error {
