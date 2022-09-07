@@ -14,7 +14,7 @@ import (
 
 type PostCreateRequestData struct {
 	Title string `json:"title" validate:"required"`
-	Text  string `json:"text" validate:"required"`
+	Text  string `json:"text"`
 }
 
 type PostListQueryParams struct {
@@ -148,9 +148,6 @@ func (t *Posts) Patch(c echo.Context) error {
 	if err := c.Validate(&reqData); err != nil {
 		return err
 	}
-	if reqData.Title == nil && reqData.Text == nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "title or text must be provided")
-	}
 	postID := c.Param("postID")
 	var found *models.Post
 	err := t.Store.UpdateMatching(&models.Post{}, badgerhold.Where(badgerhold.Key).Eq(postID), func(record interface{}) error {
@@ -160,11 +157,18 @@ func (t *Posts) Patch(c echo.Context) error {
 		}
 		found = doc
 
+		changeTitle := reqData.Title != nil && *reqData.Title != doc.Title
+		changeText := (reqData.Text != nil && *reqData.Text != doc.Text) || (reqData.Text == nil && doc.Text != "")
+		text := ""
+		if reqData.Text != nil {
+			text = *reqData.Text
+		}
+
 		var event models.PostEvents
-		if reqData.Title != nil && *reqData.Title != doc.Title && reqData.Text != nil && *reqData.Text != doc.Text {
+		if changeTitle && changeText {
 			event = &models.EventPostTitleAndTextUpdated{
 				Title:     *reqData.Title,
-				Text:      *reqData.Text,
+				Text:      text,
 				UpdatedAt: time.Now(),
 			}
 		} else if reqData.Title != nil && *reqData.Title != doc.Title {
@@ -174,7 +178,7 @@ func (t *Posts) Patch(c echo.Context) error {
 			}
 		} else if reqData.Text != nil && *reqData.Text != doc.Text {
 			event = &models.EventPostTextUpdated{
-				Text:      *reqData.Text,
+				Text:      text,
 				UpdatedAt: time.Now(),
 			}
 		}

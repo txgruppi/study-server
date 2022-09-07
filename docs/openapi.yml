@@ -264,7 +264,6 @@ components:
             title: Root Type for PostCreateRequestData
             description: ''
             required:
-                - text
                 - title
             type: object
             properties:
@@ -311,7 +310,6 @@ components:
             required:
                 - created_at
                 - id
-                - text
                 - title
                 - updated_at
                 - version
