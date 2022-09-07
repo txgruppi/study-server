@@ -19,7 +19,7 @@ type PostCreateRequestData struct {
 
 type PostListQueryParams struct {
 	Sort  *string `query:"sort" validate:"omitempty,oneof='title' '-title' 'created_at' '-created_at' 'updated_at' '-updated_at'"`
-	Skip  *int    `query:"skip" validate:"omitempty,min=1"`
+	Skip  *int    `query:"skip" validate:"omitempty,min=0"`
 	Limit *int    `query:"limit" validate:"omitempty,min=1"`
 }
 
