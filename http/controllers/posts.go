@@ -93,12 +93,12 @@ func (t *Posts) List(c echo.Context) error {
 		switch *params.Sort {
 		case "title":
 			{
-				query = query.SortBy("Title")
+				query = query.SortBy("SortableTitle")
 			}
 
 		case "-title":
 			{
-				query = query.SortBy("Title").Reverse()
+				query = query.SortBy("SortableTitle").Reverse()
 			}
 
 		case "updated_at":

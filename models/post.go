@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"strings"
+	"time"
+)
 
 type EventPostCreated struct {
 	ID        string    `json:"id"`
@@ -16,6 +19,7 @@ func (t *EventPostCreated) ApplyTo(post *Post) {
 	post.Text = t.Text
 	post.CreatedAt = t.CreatedAt
 	post.UpdatedAt = t.UpdatedAt
+	post.SortableTitle = strings.ToLower(t.Title)
 }
 
 type EventPostTitleUpdated struct {
@@ -25,6 +29,7 @@ type EventPostTitleUpdated struct {
 
 func (t *EventPostTitleUpdated) ApplyTo(post *Post) {
 	post.Title = t.Title
+	post.SortableTitle = strings.ToLower(t.Title)
 	post.UpdatedAt = t.UpdatedAt
 }
 
@@ -47,6 +52,7 @@ type EventPostTitleAndTextUpdated struct {
 func (t *EventPostTitleAndTextUpdated) ApplyTo(post *Post) {
 	post.Title = t.Title
 	post.Text = t.Text
+	post.SortableTitle = strings.ToLower(t.Title)
 	post.UpdatedAt = t.UpdatedAt
 }
 
@@ -55,12 +61,13 @@ type PostEvents interface {
 }
 
 type Post struct {
-	ID        string       `json:"id,omitempty" badgerhold:"key"`
-	Title     string       `json:"title,omitempty"`
-	Text      string       `json:"text,omitempty"`
-	CreatedAt time.Time    `json:"created_at,omitempty"`
-	UpdatedAt time.Time    `json:"updated_at,omitempty"`
-	Events    []PostEvents `json:"events,omitempty"`
+	ID            string       `json:"id,omitempty" badgerhold:"key"`
+	Title         string       `json:"title,omitempty"`
+	Text          string       `json:"text,omitempty"`
+	CreatedAt     time.Time    `json:"created_at,omitempty"`
+	UpdatedAt     time.Time    `json:"updated_at,omitempty"`
+	Events        []PostEvents `json:"events,omitempty"`
+	SortableTitle string       `json:"-"`
 }
 
 func (t *Post) AddAndApply(event PostEvents) {
