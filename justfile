@@ -8,9 +8,9 @@ generate:
 dev:
   gin --bin local/gin-bin -i run main.go
 
-package:
+package suffix="":
   mkdir -p release/
-  cd dist && zip -r ../release/study-server.zip *
+  cd dist && zip -r ../release/study-server{{suffix}}.zip *
 
 build-for-target os arch: generate
   CGO_ENABLED=0 GOOS={{os}} GOARCH={{arch}} go build -ldflags "-s -w" -v -o dist/study-server_{{os}}_{{arch}}{{ if os == "windows" { ".exe" } else { "" } }} main.go
@@ -25,6 +25,9 @@ build-for-all-targets:
   just build-for-target windows 386
   just build-for-target darwin amd64
   just build-for-target darwin arm64
+
+package-gh-release: clean build-for-all-targets
+  just package -`git rev-parse --short HEAD`
 
 clean:
   rm -rf dist/
