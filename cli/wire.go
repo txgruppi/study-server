@@ -25,7 +25,7 @@ func Wire(runner http.Runner) *cli.App {
 	})
 	app.Flags = append(app.Flags, &cli.StringFlag{
 		Name:    "delay-max",
-		Value:   "5s",
+		Value:   "0s",
 		Usage:   "maximum delay for slow request simulation",
 		EnvVars: []string{"DELAY_MAX"},
 	})
