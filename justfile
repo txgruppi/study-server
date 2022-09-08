@@ -1,3 +1,5 @@
+hash := `git rev-parse --short HEAD`
+
 build: generate
   CGO_ENABLED=0 go build -ldflags "-s -w" -v -o dist/study-server main.go
   cp -r ./docs/ ./dist/
@@ -27,7 +29,8 @@ build-for-all-targets:
   just build-for-target darwin arm64
 
 package-gh-release: clean build-for-all-targets
-  just package -`git rev-parse --short HEAD`
+  git tag {{hash}}
+  just package -{{hash}}
 
 clean:
   rm -rf dist/
